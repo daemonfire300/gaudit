@@ -14,12 +14,13 @@ type Observer struct {
 	logger Logger
 }
 
+// NewObserver creates a new observer and returns an error if the passed arguments do not match.
 func NewObserver(store StorageBackend, logger Logger) (*Observer, error) {
 	if store == nil {
-		return nil, fmt.Errorf("storage backend cannot be nil")
+		return nil, fmt.Errorf("%w: storage backend cannot be nil", ErrSetupFailed)
 	}
 	if logger == nil {
-		return nil, fmt.Errorf("logger cannot be nil")
+		return nil, fmt.Errorf("%w: logger cannot be nil", ErrSetupFailed)
 	}
 	return &Observer{
 		store:  store,
@@ -27,7 +28,7 @@ func NewObserver(store StorageBackend, logger Logger) (*Observer, error) {
 	}, nil
 }
 
-// Observe simply observes an action by an user and adds metadata if given.
+// Observe simply observes an action by a user and adds metadata if given.
 // The date of observation is equal to the time of calling Observe, i.e., time.Now.
 func (ob *Observer) Observe(ctx context.Context, user, action string, meta map[string]string) {
 	_ = ob.observe(ctx, &LogEntry{

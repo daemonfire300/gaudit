@@ -9,7 +9,7 @@ import (
 )
 
 type StorageBackend interface {
-	// Put should implement functionality to store a log entry, whatever that constitutes for your special case
+	// Put should implement functionality to store a log entry, whatever that constitutes for your special case.
 	Put(ctx context.Context, entry LogEntry) error
 
 	// GetByUser should return the AuditTrail for that specific user or ErrNotFound if none can be found.

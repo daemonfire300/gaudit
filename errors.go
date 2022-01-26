@@ -6,5 +6,6 @@ package gaudit
 import "errors"
 
 var (
-	ErrNotFound = errors.New("no results")
+	ErrNotFound    = errors.New("no results")
+	ErrSetupFailed = errors.New("setup failed")
 )
