@@ -3,11 +3,13 @@
 
 package gaudit
 
-type AuditTrail struct {
-}
+import "time"
+
+type AuditTrail []LogEntry
 
 type LogEntry struct {
-	User   string
-	Action string
-	Meta   map[string]string
+	CreatedAt time.Time
+	User      string
+	Action    string
+	Meta      map[string]string
 }

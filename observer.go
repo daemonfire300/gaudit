@@ -6,6 +6,7 @@ package gaudit
 import (
 	"context"
 	"fmt"
+	"time"
 )
 
 type Observer struct {
@@ -26,19 +27,25 @@ func NewObserver(store StorageBackend, logger Logger) (*Observer, error) {
 	}, nil
 }
 
+// Observe simply observes an action by an user and adds metadata if given.
+// The date of observation is equal to the time of calling Observe, i.e., time.Now.
 func (ob *Observer) Observe(ctx context.Context, user, action string, meta map[string]string) {
 	_ = ob.observe(ctx, &LogEntry{
-		User:   user,
-		Action: action,
-		Meta:   meta,
+		CreatedAt: time.Now(),
+		User:      user,
+		Action:    action,
+		Meta:      meta,
 	})
 }
 
+// ObserveAndReturn works exactly as Observe and additionally returns a copy of the created LogEntry and an
+// error in case the StorageBackend returned an error.
 func (ob *Observer) ObserveAndReturn(ctx context.Context, user, action string, meta map[string]string) (LogEntry, error) {
 	entry := &LogEntry{
-		User:   user,
-		Action: action,
-		Meta:   meta,
+		CreatedAt: time.Now(),
+		User:      user,
+		Action:    action,
+		Meta:      meta,
 	}
 	err := ob.observe(ctx, entry)
 	return *entry, err
